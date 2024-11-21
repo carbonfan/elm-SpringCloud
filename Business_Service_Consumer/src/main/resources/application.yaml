@@ -1,0 +1,16 @@
+server:
+  port: 15000
+spring:
+  application:
+    name: business-service-consumer
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        name: business_service_consumer-dev.yaml
+      discovery:
+        server-addr: http://localhost:81/
+        username: nacos
+        password: nacos
+  main:
+    allow-bean-definition-overriding: true

@@ -1,0 +1,51 @@
+server:
+  port: 12000
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+
+    nacos:
+      discovery:
+        server-addr: http://localhost:81/
+        username: nacos
+        password: nacos
+    gateway:
+      routes:
+        - id: food-service-consumer
+          uri: lb://business-service-consumer
+          predicates:
+            - Path=/food/**
+        - id: business-service-consumer
+          uri: lb://business-service-consumer
+          predicates:
+            - Path=/business/**
+        - id: cart-service-consumer
+          uri: lb://order-service-consumer
+          predicates:
+            - Path=/cart/**
+        - id: order-service-consumer
+          uri: lb://order-service-consumer
+          predicates:
+            - Path=/orders/**
+        - id: user-service-consumer
+          uri: lb://user-service-consumer
+          predicates:
+            - Path=/user/**
+        - id: da-service-consumer
+          uri: lb://user-service-consumer
+          predicates:
+            - Path=/da/**
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "GET,HEAD,POST,PUT,DELETE,OPTIONS"
+            allowed-headers: "*"
+
+  main:
+    web-application-type: reactive

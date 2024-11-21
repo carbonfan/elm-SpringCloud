@@ -1,0 +1,30 @@
+server:
+  port: 16001
+spring:
+  application:
+    name: order-service-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://localhost:81/
+        username: nacos
+        password: nacos
+  datasource:
+    url: jdbc:mysql://localhost:3306/elm_springboot?useSSL=false
+    username: 'root'
+    password: 'qazwsxedc'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: false

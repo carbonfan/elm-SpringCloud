@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comm.dao.ICartMapper">
+    <resultMap id="c_f_b" type="com.comm.pojo.Cart">
+        <id column="cartId" property="cartId"/>
+        <result column="foodId" property="foodId"/>
+        <result column="businessId" property="businessId"/>
+        <result column="userId" property="userId"/>
+        <result column="quantity" property="quantity"/>
+        <association property="food" javaType="com.comm.pojo.Food"
+                     select="com.comm.dao.IFoodMapper.getFoodById" column="foodId"/>
+        <association property="business" javaType="com.comm.pojo.Business"
+                     select="com.comm.dao.IBusinessMapper.getBusinessById" column="businessId"/>
+    </resultMap>
+
+    <select id="listCart"
+            parameterType="com.comm.pojo.Cart"
+            resultMap="c_f_b">
+        select * from cart where userId=#{userId}
+            <if test="businessId!=null and businessId!=''">
+                and businessId=#{businessId}
+            </if>
+    </select>
+
+    <insert id="saveCart"
+            useGeneratedKeys="true"
+            keyProperty="cartId"
+            keyColumn="cartId"
+            parameterType="com.comm.pojo.Cart">
+        insert into cart (
+                          foodId,
+                          businessId,
+                          userId,
+                          quantity)
+                values(
+                       #{foodId},
+                       #{businessId},
+                       #{userId},
+                       #{quantity})
+    </insert>
+
+    <update id="updateCart"
+            keyProperty="cartId"
+            keyColumn="cartId"
+            parameterType="com.comm.pojo.Cart">
+        update Cart set quantity = #{quantity}
+                    where foodId = #{foodId} AND
+                          businessId = #{businessId} AND
+                          userId = #{userId}
+    </update>
+    
+    <delete id="removeCart"
+            parameterType="com.comm.pojo.Cart">
+        delete from cart where userId = #{userId} AND businessId = #{businessId}
+            <if test="foodId!=null and foodId!=''">
+                AND foodId = #{foodId}
+            </if>
+    </delete>
+</mapper>

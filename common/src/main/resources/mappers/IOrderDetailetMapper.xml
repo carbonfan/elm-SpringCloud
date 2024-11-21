@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comm.dao.IOrderDetailetMapper">
+    <resultMap type="com.comm.pojo.OrderDetailet" id="od_f">
+        <id column="odId" property="odId"/>
+        <result column="orderId" property="orderId"/>
+        <result column="foodId" property="foodId"/>
+        <result column="quantity" property="quantity"/>
+        <association property="food" javaType="com.comm.pojo.Food"
+                     select="com.comm.dao.IFoodMapper.getFoodById" column="foodId"/>
+    </resultMap>
+
+    <insert id="saveOrderDetailetBatch" parameterType="com.comm.pojo.OrderDetailet">
+        insert into orderDetailet(orderId,foodId,quantity) values
+        <foreach collection="list" item="od_f" separator=",">
+            (#{od_f.orderId},#{od_f.foodId},#{od_f.quantity})
+        </foreach>
+    </insert>
+
+    <select id="listOrderDetailetByOrderId" parameterType="Integer"
+            resultMap="od_f">
+        select * from orderDetailet where orderId=#{orderId}
+    </select>
+</mapper>

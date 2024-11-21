@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comm.dao.IDeliveryAddressMapper">
+    <select id="listDeliveryAddressByUserId"
+            resultType="com.comm.pojo.DeliveryAddress">
+        select * from deliveryaddress where userId = #{userId}
+    </select>
+    
+    <select id="getDeliveryAddressById"
+            resultType="com.comm.pojo.DeliveryAddress">
+        select * from deliveryaddress where daId = #{daId}
+    </select>
+    
+    <insert id="saveDeliveryAddress"
+            useGeneratedKeys="true"
+            keyProperty="daId"
+            keyColumn="daId"
+            parameterType="com.comm.pojo.DeliveryAddress">
+        insert into deliveryaddress (contactName,
+                                     contactSex,
+                                     contactTel,
+                                     address,
+                                     userId)
+                                values(#{contactName},
+                                        #{contactSex},
+                                        #{contactTel},
+                                        #{address},
+                                        #{userId})
+    </insert>
+
+    <update id="updateDeliveryAddress"
+            keyProperty="daId"
+            keyColumn="daId"
+            parameterType="com.comm.pojo.DeliveryAddress">
+        update deliveryaddress set
+                                    contactName = #{contactName},
+                                    contactSex = #{contactSex},
+                                    contactTel = #{contactTel},
+                                    address = #{address}
+                                where daId = #{daId}
+    </update>
+    
+    <delete id="removeDeliveryAddress"
+            parameterType="String">
+        delete from deliveryaddress where daId = #{daId}
+    </delete>
+</mapper>

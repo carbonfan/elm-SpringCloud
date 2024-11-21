@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comm.dao.IUserMapper">
+    <select id="getUserByIdByPass"
+            parameterType="String"
+            resultType="com.comm.pojo.User">
+        select * from User where userId = #{userId} AND password = #{password}
+    </select>
+
+    <select id="getUserById"
+            resultType="Integer">
+        select count(*) from User where userId = #{userId}
+    </select>
+
+    <insert id="saveUser"
+            keyProperty="userId"
+            keyColumn="userId"
+            parameterType="com.comm.pojo.User">
+        insert into User(
+                         userId,
+                         password,
+                         userName,
+                         userSex
+                        )  values (
+                                   #{userId},
+                                   #{password},
+                                   #{userName},
+                                   #{userSex}
+                                  )
+    </insert>
+    <update id="setToken"
+            keyProperty="userId"
+            keyColumn="userId"
+            parameterType="com.comm.pojo.User">
+        update User set token = #{token}
+            where userId = #{userId}
+    </update>
+</mapper>
